@@ -12,8 +12,6 @@ services:
     depends_on:
       - postgresqldb
       - kafka-server
-    networks:
-      - springboot-network
   postgresqldb:
     image: postgres
     container_name: postgres_db
@@ -24,9 +22,7 @@ services:
     - POSTGRES_PASSWORD=postgres
     - POSTGRES_DB=messageappdb
     volumes:
-    - db-data:/var/lib/postgresql/data/
-    networks:
-    - springboot-network
+    - database-data:/var/lib/postgresql/data/
   zookeeper:
     image: wurstmeister/zookeeper
     container_name: zookeeper
@@ -40,10 +36,5 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka-server
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    networks:
-    - springboot-network
-  networks:
-    springboot-network:
-      driver: bridge
-  volumes:
-    db-data:
+volumes:
+  database-data:
